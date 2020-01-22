@@ -27,6 +27,8 @@ menu = Menu("Main Menu")
 
 menu.add_option(submenu)
 menu.menu_action(submenu)
+
+menu.render() # Renders the menu on the LCD
 ```
 
 # Testing
