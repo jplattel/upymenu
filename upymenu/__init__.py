@@ -9,7 +9,7 @@ class Menu:
         self.render_title = render_title
         self.lcd = None
         self.options = []
-        self.parent = None
+        self.parent_menu = None
 
         # We start on the first option by default (not 0 to prevent ZeroDivision errors )
         self.focus = 1
@@ -36,11 +36,12 @@ class Menu:
         # Chunk the list and calculate the viewport:
         self.options_chunked = list(self._chunk_options())
         self.render()
+        return self
 
     # Renders the menu, also when refreshing (when changing select)
     def render(self):
         # We only render the active screen, not the others
-        if not self.active:
+        if not self.active or not self.options_chunked:
             return
 
         self.viewport = self.options_chunked[self._current_chunk()]
@@ -79,21 +80,26 @@ class Menu:
     # Focus on the next option in the menu
     def focus_next(self):
         self.focus += 1
+        # Wrap around
+        if self.focus > len(self.options):
+            self.focus = 1
         self.render()
 
     # Focus on the previous option in the menu
     def focus_prev(self):
         self.focus -= 1
+        if self.focus < 1:
+            self.focus = len(self.options)
         self.render()
 
-    # Focus on the option n in the menu
+    # Focus on the option n 1in the menu
     def focus(self, n):
         self.focus = n
         self.render()
 
     # Choose the item on which the focus is applied
     def choose(self):
-        chosen_option = self.options[self.focus]
+        chosen_option = self.options[self.focus - 1]
 
         if type(chosen_option) == Menu:
             return self._choose_menu(chosen_option)
@@ -103,18 +109,20 @@ class Menu:
             return
 
     # Navigate to the parent (if the current menu is a submenu)
-    def parent():
-        if self.parent:
-            self._choose_menu(self.parent)
+    def parent(self):
+        if self.parent_menu:
+            self.active = False
+            return self.parent_menu.start(self.lcd)
 
-    def _choose_menu(self, menu):
+    def _choose_menu(self, submenu):
         self.active = False
-        menu.parent = self
-        return menu.start(self.lcd)  # Start the submenu or parent
+        submenu.parent_menu = self
+        return submenu.start(self.lcd)  # Start the submenu or parent
 
 
 class MenuAction:
-    def __init__(self, callback):
+    def __init__(self, title, callback):
+        self.title = title
         self.callback = callback
 
     def cb(self):
