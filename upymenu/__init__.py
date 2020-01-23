@@ -7,7 +7,7 @@ class Menu:
 
         # TODO: implement if we should render a title.. can be done, by adding a noop option to the option list?
         self.render_title = render_title
-        self.lcd = lcd
+        self.lcd = None
         self.options = []
         self.parent = None
 
@@ -18,8 +18,8 @@ class Menu:
 
     # Chunk the options to only render the ones in the viewport
     def _chunk_options(self):
-        for i in xrange(0, len(self.options), self.lcd_lines):
-            yield options[i : i + n]
+        for i in range(0, len(self.options), self.lines):
+            yield self.options[i : i + self.lines]
 
     # Get the current chunk based on the focus position
     def _current_chunk(self):
@@ -52,7 +52,7 @@ class Menu:
         self._render_options()
 
     def _render_cursor(self):
-        for l in xrange(0, self.lines):
+        for l in range(0, self.lines):
             self.lcd.move_to(l, 0)
             # If the current position matches the focus, render
             # the cursor otherwise, render an empty space
@@ -70,6 +70,10 @@ class Menu:
 
     # Add an option to the menu (could be an action or submenu)
     def add_option(self, option):
+        if type(option) not in [Menu, MenuAction, MenuNoop]:
+            raise Exception(
+                "Cannot add option to menu (required Menu, MenuAction or MenuNoop)"
+            )
         self.options.append(option)
 
     # Focus on the next option in the menu
@@ -118,4 +122,5 @@ class MenuAction:
 
 
 class MenuNoop:
-    pass
+    def __init__(self, title):
+        self.title = title

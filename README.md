@@ -11,8 +11,9 @@ Current development is done based on when I have to to work on it when I want to
 The example below renders a menu with a submenu and actions that have callbacks attached which you can use to run your own function. It requires one dependency, and that's [`python_lcd`](https://github.com/dhylands/python_lcd) for interacting with the LCD itself.
 
 ```python
+from machine import Pin, I2C # Basics for creating an LCD interface
 from esp8266_i2c_lcd import I2cLcd # Example LCD interface used
-from upymenu import Menu, MenuAction
+from upymenu import Menu, MenuAction, MenuNoop
 
 def action_callback(event):
     print(event)
@@ -27,6 +28,7 @@ menu_action = MenuAction("Action", callback=action_callback)
 menu = Menu("Main Menu")
 menu.add_option(submenu)
 menu.add_option(menu_action)
+menu.add_option(MenuNoop("Nothing here"))
 
 # Example config for LCD via i2c, you will need this 
 # for the menu to function, the screen size is required
