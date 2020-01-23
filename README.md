@@ -52,4 +52,4 @@ current_menu = menu.parent()
 
 # Testing
 
-TBD.
+If you have a `micropython` port running locally, you can run the test suite with it, ie: `micropython tests.py`. This is as close I can get with my current knowledge about micropython. Any pointers and suggestions towards improvement here would be appreciated!

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="uPyMenu",
+    name="upymenu",
     version="0.0.1",
     author="Joost Plattel",
     description="A micropython Menu for LCD Displays",

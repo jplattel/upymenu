@@ -30,3 +30,12 @@ menu.start(MockLCD(16, 2))
 
 assert len(menu.options_chunked) == 1
 assert len(menu.options_chunked[0]) == 1
+assert menu.focus == 1
+
+menu.focus_next()
+
+assert menu.focus == 2
+
+menu.focus_prev()
+
+assert menu.focus == 1
