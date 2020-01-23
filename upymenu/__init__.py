@@ -92,8 +92,8 @@ class Menu:
             self.focus = len(self.options)
         self.render()
 
-    # Focus on the option n 1in the menu
-    def focus(self, n):
+    # Focus on the option n in the menu
+    def focus_set(self, n):
         self.focus = n
         self.render()
 
@@ -104,9 +104,10 @@ class Menu:
         if type(chosen_option) == Menu:
             return self._choose_menu(chosen_option)
         elif type(chosen_option) == MenuAction:
-            return chosen_option.cb()  # Execute the callback function
+            chosen_option.cb()  # Execute the callback function
+            return self
         elif type(chosen_option) == MenuNoop:
-            return
+            return self
 
     # Navigate to the parent (if the current menu is a submenu)
     def parent(self):

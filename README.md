@@ -6,6 +6,10 @@ uPyMenu is a micropython menu implementation for LCD displays. Coming from an Ar
 
 Current development is done based on when I have to to work on it when I want to. But feel free to fork it and add your functionality. If you find any bugs or have suggestions for features, please open up a issue (or pull-request if you create the feature yourself!).
 
+## TODO
+
+*   Add arguments to callback actions in the menu
+
 # Usage
 
 The example below renders a menu with a submenu and actions that have callbacks attached which you can use to run your own function. It requires one dependency, and that's [`python_lcd`](https://github.com/dhylands/python_lcd) for interacting with the LCD itself.
@@ -43,11 +47,11 @@ menu.focus_prev() # Focus on the previous item in the menu
 
 # Choose the focused item, if it's and action execute 
 # the callback, or if it is a menu, render that menu.
-current_menu = menu.choose() 
+menu = menu.choose()
 
 # If it's a submenu, you can use the parent() function
 # to navigate back up to the tree.
-current_menu = menu.parent() 
+menu = menu.parent() 
 ```
 
 # Testing
