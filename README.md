@@ -19,8 +19,8 @@ from machine import Pin, I2C # Basics for creating an LCD interface
 from esp8266_i2c_lcd import I2cLcd # Example LCD interface used
 from upymenu import Menu, MenuAction, MenuNoop
 
-def action_callback(event):
-    print(event)
+def action_callback():
+    print("callback action chosen")
 
 submenu = Menu("Submenu")
 submenu_action_1 = MenuAction("Submenu Action", callback=action_callback)
