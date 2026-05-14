@@ -23,7 +23,8 @@ class Menu:
 
     # Get the current chunk based on the focus position
     def _current_chunk(self):
-        return math.floor(self.focus / (self.lines + 1))  # current chunk
+        # 0-basiert, ganzzahlige Division
+        return (self.focus - 1) // self.lines
 
     # Starts the menu, used at root level to start the interface.
     # Or when navigating to a submenu or parten
@@ -53,20 +54,19 @@ class Menu:
         self._render_options()
 
     def _render_cursor(self):
+        chunk_offset = self._current_chunk() * self.lines
+        local_focus = self.focus - 1 - chunk_offset
+
         for l in range(0, self.lines):
-            self.lcd.move_to(l, 0)
-            # If the current position matches the focus, render
-            # the cursor otherwise, render an empty space
-            if l == (self.focus - 1):
+            self.lcd.move_to(0, l)
+            if l == local_focus:
                 self.lcd.putstr(">")
             else:
                 self.lcd.putstr(" ")
 
     def _render_options(self):
-        # Render the options:
         for l, option in enumerate(self.viewport):
-            self.lcd.move_to(l, 0)  # Move to the line
-            # And render the longest possible string on the screen
+            self.lcd.move_to(1, l)                        
             self.lcd.putstr(option.title[: self.columns - 1])
 
     # Add an option to the menu (could be an action or submenu)
